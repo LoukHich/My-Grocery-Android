@@ -1,32 +1,21 @@
 package com.ensah.mygroceryapp.models;
 
-
-public class Article {
-
+public class ArticleWithCount {
     public static final String COURSE_NAME = "couseName";
     private Integer id;
     private String name;
     private  String unite;
     private Integer CategorieId;
     private  Integer count ;
-    public Article() {
 
-    }
 
-    public Article(String name,String unite) {
-        this.name = name;
-        this.unite =unite;
-    }
 
-    public Article(Integer id, String name) {
-        this.id = id;
-        this.name = name;
-    }
 
-    public Article(int id, String name, String unite) {
+    public ArticleWithCount(int id, String name, String unite,Integer count) {
         this.id = id;
         this.name = name;
         this.unite=unite;
+        this.count=count;
     }
 
     public Integer getId() {
@@ -51,5 +40,12 @@ public class Article {
 
     public void setUnite(String unite) {
         this.unite = unite;
+    }
+
+    public Integer getCount(){
+        return this.count;
+    }
+    public void setCount(Integer count){
+        this.count=count;
     }
 }

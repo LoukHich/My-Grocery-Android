@@ -16,9 +16,10 @@
         android:background="@color/darkGray">
 
         <TextView
+            android:id="@+id/txt_view_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Courses"
+            android:text="Articles"
             android:textSize="35sp"
             android:textColor="@color/white"
             android:textStyle="bold"
@@ -37,7 +38,7 @@
     </androidx.appcompat.widget.Toolbar>
 
     <ListView
-        android:id="@+id/courseListView"
+        android:id="@+id/CourseArticleListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="3dp"

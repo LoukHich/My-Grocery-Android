@@ -10,6 +10,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 import com.ensah.mygroceryapp.models.Article;
+import com.ensah.mygroceryapp.models.ArticleWithCount;
 import com.ensah.mygroceryapp.models.Course;
 import com.ensah.mygroceryapp.models.CourseArticle;
 
@@ -249,7 +250,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Log.e(LOG, "Fetch All  Articles  Of course " + courseName);
         return articlesOfCourseList;
     }
+    public List<ArticleWithCount> getArticlesOfCourseV2(String courseName) {
+        String sql = "SELECT article.id , article_name, article_unit, course_article.count from article  left join course_article  on article.id =course_article.article_id join course  on course.id=course_article.course_id where course.course_name= '" + courseName + "'";
+       List<ArticleWithCount> articlesOfCourseList = new ArrayList<>();
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        try (Cursor result = sqLiteDatabase.rawQuery(sql, null)) {
+            if (result.getCount() != 0) {
+                while (result.moveToNext()) {
+                    int id = result.getInt(0);
+                    ArticleWithCount article = new ArticleWithCount(id, result.getString(1), result.getString(2),result.getInt(3));
+                    articlesOfCourseList.add(article);
 
+                }
+            }
+        }
+        Log.e(LOG, "Fetch All  Articles  Of course without count" + courseName);
+        return articlesOfCourseList;
+    }
     public List<Course> getCouresrOfArticle(String articleName) {
         List<Course> courseList = new ArrayList<>();
         String sql = "select course.id, course.course_name, course.course_note from course  left join course_article  on course.id=course_article.course_id join article  on article.id=course_article.article_id where article.article_name= '" + articleName + "'";

@@ -15,29 +15,31 @@
         android:theme="?actionBarTheme"
         android:background="@color/darkGray">
 
+
         <TextView
+            android:id="@+id/article_txt_view_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Courses"
-            android:textSize="35sp"
+            android:text="Add Article to "
+            android:textSize="20sp"
             android:textColor="@color/white"
             android:textStyle="bold"
             android:layout_gravity="center"/>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="+"
-            android:textSize="35sp"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:layout_gravity="end"
-            android:onClick="newArticle"/>
+<!--        <Button-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="+"-->
+<!--            android:textSize="35sp"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textStyle="bold"-->
+<!--            android:layout_gravity="end"-->
+<!--           />-->
 
     </androidx.appcompat.widget.Toolbar>
 
     <ListView
-        android:id="@+id/courseListView"
+        android:id="@+id/articleListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="3dp"

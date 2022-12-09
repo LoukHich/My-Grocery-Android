@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 
 import com.ensah.mygroceryapp.models.Article;
 import com.ensah.mygroceryapp.models.ArticleWithCount;
+import com.ensah.mygroceryapp.models.ArticleWithInfo;
 import com.ensah.mygroceryapp.models.Course;
 import com.ensah.mygroceryapp.models.CourseArticle;
 
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -250,15 +252,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Log.e(LOG, "Fetch All  Articles  Of course " + courseName);
         return articlesOfCourseList;
     }
+
     public List<ArticleWithCount> getArticlesOfCourseV2(String courseName) {
         String sql = "SELECT article.id , article_name, article_unit, course_article.count from article  left join course_article  on article.id =course_article.article_id join course  on course.id=course_article.course_id where course.course_name= '" + courseName + "'";
-       List<ArticleWithCount> articlesOfCourseList = new ArrayList<>();
+        List<ArticleWithCount> articlesOfCourseList = new ArrayList<>();
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         try (Cursor result = sqLiteDatabase.rawQuery(sql, null)) {
             if (result.getCount() != 0) {
                 while (result.moveToNext()) {
                     int id = result.getInt(0);
-                    ArticleWithCount article = new ArticleWithCount(id, result.getString(1), result.getString(2),result.getInt(3));
+                    ArticleWithCount article = new ArticleWithCount(id, result.getString(1), result.getString(2), result.getInt(3));
                     articlesOfCourseList.add(article);
 
                 }
@@ -267,6 +270,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Log.e(LOG, "Fetch All  Articles  Of course without count" + courseName);
         return articlesOfCourseList;
     }
+
     public List<Course> getCouresrOfArticle(String articleName) {
         List<Course> courseList = new ArrayList<>();
         String sql = "select course.id, course.course_name, course.course_note from course  left join course_article  on course.id=course_article.course_id join article  on article.id=course_article.article_id where article.article_name= '" + articleName + "'";
@@ -285,5 +289,51 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Log.e(LOG, "Get all  Courses of " + articleName);
         Log.e(LOG, sql);
         return courseList;
+    }
+
+    public List<ArticleWithInfo> getAllArtclewithInfo() {
+        List<ArticleWithInfo> articleList = new ArrayList<>();
+        String sql = "SELECT article.id , article_name, article_unit, course.course_name ,course_article.count from article left join course_article on article.id =course_article.article_id join course on course.id=course_article.course_id AND course_article.count>0";
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        try (Cursor result = sqLiteDatabase.rawQuery(sql, null)) {
+            if (result.getCount() != 0) {
+                while (result.moveToNext()) {
+                    int id = result.getInt(0);
+                    ArticleWithInfo articleWithInfo = new ArticleWithInfo(new ArticleWithCount(id, result.getString(1), result.getString(2), result.getInt(4)), result.getString(3) + " : " + result.getInt(4) + " | ");
+                    articleList.add(articleWithInfo);
+                }
+            }
+
+        }
+        HashMap<Integer, ArticleWithInfo> map = new HashMap<>();
+        for (ArticleWithInfo article : articleList) {
+            if (map.containsKey(article.getArticle().getId())) {
+                article.setInfo(article.getInfo() + map.get(article.getArticle().getId()).getInfo());
+                map.put(article.getArticle().getId(), article);
+            } else {
+                map.put(article.getArticle().getId(), article);
+            }
+        }
+        return map.values().stream().collect(Collectors.toList());
+
+    }
+
+    public  boolean CheckIsAlreadyInDB(String courseName, String aticleName) {
+
+        String Query = "SELECT article.id , article_name, article_unit, course_article.count from article  left join course_article  on article.id =course_article.article_id join course  on course.id=course_article.course_id where course.course_name= '" + courseName + "' AND article.article_name= '"+aticleName +"'";
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        Cursor cursor = sqLiteDatabase.rawQuery(Query, null);
+        if (cursor.getCount() <= 0) {
+            cursor.close();
+            return false;
+        }
+        cursor.close();
+        return true;
+    }
+    public void incrementCountInCourse(String courseName , Integer articleId){
+        String Query = "UPDATE course_article SET count= count+1 WHERE article_id = "+ articleId + " AND course_id = (SELECT course.id FROM course WHERE course.course_name='"+ courseName+"')";
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        sqLiteDatabase.execSQL(Query);
+
     }
 }

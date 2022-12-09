@@ -6,8 +6,7 @@ public class ArticleWithCount {
     private String name;
     private  String unite;
     private Integer CategorieId;
-    private  Integer count ;
-
+    private  Integer count;
 
 
 

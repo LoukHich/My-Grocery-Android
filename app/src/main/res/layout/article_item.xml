@@ -18,20 +18,31 @@
             android:maxLines="1"
             android:textColor="@color/darkGray"
             android:textSize="25sp"/>
-
+        <TextView
+            android:id="@+id/article_itemUnite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="wdwddwdw"
+            android:maxLines="1"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="50dp"
+            android:textColor="@color/darkGray"
+            android:textSize="20sp"
+            android:layout_gravity="left"
+            />
 
     </LinearLayout>
 
 
     <TextView
-        android:id="@+id/article_itemUnite"
+        android:id="@+id/article_txt_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Quantite"
-        android:maxLines="1"
+        android:maxLines="2"
         android:layout_marginTop="5dp"
         android:textColor="@color/darkGray"
-        android:textSize="20sp"/>
+        android:textSize="10sp"/>
 
 
 </LinearLayout>

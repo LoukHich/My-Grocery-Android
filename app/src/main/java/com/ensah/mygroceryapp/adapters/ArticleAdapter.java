@@ -12,29 +12,30 @@ import androidx.annotation.Nullable;
 
 import com.ensah.mygroceryapp.R;
 import com.ensah.mygroceryapp.models.Article;
+import com.ensah.mygroceryapp.models.ArticleWithInfo;
 import com.ensah.mygroceryapp.models.Course;
 
 import java.util.List;
 
-public class ArticleAdapter extends ArrayAdapter<Article> {
+public class ArticleAdapter extends ArrayAdapter<ArticleWithInfo> {
 
-    public ArticleAdapter(@NonNull Context context, List<Article> articles) {
+    public ArticleAdapter(@NonNull Context context, List<ArticleWithInfo> articles) {
         super(context,0, articles);
     }
 
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        Article article = getItem(position);
+        ArticleWithInfo articleWithInfo = getItem(position);
         if (convertView == null)
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.article_item, parent, false);
 
         TextView name = convertView.findViewById(R.id.article_itemName);
         TextView unite = convertView.findViewById(R.id.article_itemUnite);
-
-        name.setText(article.getName());
-        unite.setText(article.getUnite());
-
+        TextView info = convertView.findViewById(R.id.article_txt_info);
+        name.setText(articleWithInfo.getArticle().getName());
+        unite.setText(articleWithInfo.getArticle().getUnite());
+        info.setText("sur listes : "+articleWithInfo.getInfo());
         return convertView;
     }
 }

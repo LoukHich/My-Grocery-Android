@@ -32,7 +32,7 @@
             android:textColor="@color/white"
             android:textStyle="bold"
             android:layout_gravity="end"
-            android:onClick="newArticle"/>
+            android:onClick="showAlertDialogButtonClicked"/>
 
     </androidx.appcompat.widget.Toolbar>
 
